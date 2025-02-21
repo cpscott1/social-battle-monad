@@ -10,39 +10,41 @@ on:
 
 jobs:
   ci:
-    runs-on: ${{ matrix.os }}
-
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        node: [lts/*]
-
+        node-version: [18.x]
+        yarn-version: ['3.2.3']
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
-
-      - name: Setup node env
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
-          cache: yarn
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - name: Install Yarn
+        run: corepack enable && corepack prepare yarn@${{ matrix.yarn-version }} --activate
 
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Run deploy contracts on Monad (& generate contracts typescript output)
-        env:
-          DEPLOYER_PRIVATE_KEY: ${{ secrets.KEY }}
-          MONAD_RPC_URL: ${{ secrets.URL }}
-          MONAD_CHAIN_ID: ${{ secrets.CHAIN_ID }}
-          MONAD_EXPLORER_URL: ${{ secrets.EXPLORER }}
-        run: yarn deploy --network monadDevnet
+      - name: Run hardhat node, deploy contracts (in background)
+        run: yarn chain &
 
       - name: Run nextjs lint
-        run: yarn next:lint --max-warnings=0
-
-      - name: Check typings on nextjs
-        run: yarn next:check-types
+        run: yarn next:lint
 
       - name: Run hardhat lint
-        run: yarn hardhat:lint --max-warnings=0
+        run: yarn hardhat:lint
+
+      - name: Check contract sizes
+        run: yarn hardhat size-contracts
+
+      - name: Run hardhat test
+        run: yarn hardhat:test
+
+      - name: Build nextjs
+        run: yarn next:build
+
+      - name: Deploy contracts to testnet
+        run: yarn deploy --network monadTestnet
