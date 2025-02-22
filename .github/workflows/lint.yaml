@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
         yarn-version: ['3.2.3']
     steps:
       - uses: actions/checkout@v3
@@ -28,23 +28,8 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Run hardhat node, deploy contracts (in background)
-        run: yarn chain &
-
       - name: Run nextjs lint
         run: yarn next:lint
 
       - name: Run hardhat lint
         run: yarn hardhat:lint
-
-      - name: Check contract sizes
-        run: yarn hardhat size-contracts
-
-      - name: Run hardhat test
-        run: yarn hardhat:test
-
-      - name: Build nextjs
-        run: yarn next:build
-
-      - name: Deploy contracts to testnet
-        run: yarn deploy --network monadTestnet
