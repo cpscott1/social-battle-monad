@@ -36,25 +36,34 @@ export const queryClient = new QueryClient({
   },
 });
 
-export const ScaffoldEthAppWithProviders = ({ children }: { children: React.ReactNode }) => {
+// Separate client component for theme handling
+const ThemeAwareRainbowKit = ({ children }: { children: React.ReactNode }) => {
   const { resolvedTheme } = useTheme();
-  const isDarkMode = resolvedTheme === "dark";
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  if (!mounted) {
+    return null;
+  }
+
+  return (
+    <RainbowKitProvider avatar={BlockieAvatar} theme={resolvedTheme === "dark" ? darkTheme() : lightTheme()}>
+      {children}
+    </RainbowKitProvider>
+  );
+};
+
+export const ScaffoldEthAppWithProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <ProgressBar height="3px" color="#2299dd" />
-        <RainbowKitProvider
-          avatar={BlockieAvatar}
-          theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
-        >
+        <ThemeAwareRainbowKit>
           <ScaffoldEthApp>{children}</ScaffoldEthApp>
-        </RainbowKitProvider>
+        </ThemeAwareRainbowKit>
       </QueryClientProvider>
     </WagmiProvider>
   );

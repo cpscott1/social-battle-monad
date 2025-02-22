@@ -54,7 +54,7 @@ const NumberDisplay = ({ value }: { value: bigint }) => {
 
   const asNumber = Number(value);
   if (asNumber <= Number.MAX_SAFE_INTEGER && asNumber >= Number.MIN_SAFE_INTEGER) {
-    return String(value);
+    return <span>{String(value)}</span>;
   }
 
   return (

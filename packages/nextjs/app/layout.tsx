@@ -12,8 +12,8 @@ export const metadata = getMetadata({
 const SocialBattleApp = ({ children }: { children: React.ReactNode }) => {
   return (
     <html suppressHydrationWarning>
-      <body>
-        <ThemeProvider enableSystem>
+      <body suppressHydrationWarning>
+        <ThemeProvider enableSystem defaultTheme="dark">
           <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
         </ThemeProvider>
       </body>
