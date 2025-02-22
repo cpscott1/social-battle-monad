@@ -4,7 +4,6 @@ import { MonadLogo } from "./assets/MonadLogo";
 import { hardhat } from "viem/chains";
 import { CurrencyDollarIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import { BuidlGuidlLogo } from "~~/components/assets/BuidlGuidlLogo";
 import { Faucet } from "~~/components/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { useGlobalState } from "~~/services/store/store";
@@ -46,26 +45,15 @@ export const Footer = () => {
         <ul className="menu menu-horizontal w-full">
           <div className="flex justify-center items-center gap-2 text-sm w-full">
             <div className="text-center">
-              {/* TODO: add the scaffold-eth-monad repo link */}
-              <a href="https://github.com/scaffold-eth/se-2" target="_blank" rel="noreferrer" className="link">
-                Fork me
+              <a href="https://github.com/cpscott1/social-battle-monad" target="_blank" rel="noreferrer" className="link">
+                View Source
               </a>
             </div>
             <span>·</span>
             <div className="flex justify-center items-center gap-2">
               <p className="m-0 text-center">
-                Built with <HeartIcon className="inline-block h-4 w-4" /> at
+                Built by <span className="font-bold">Two Divs</span> with <HeartIcon className="inline-block h-4 w-4" /> on
               </p>
-              <a
-                className="flex justify-center items-center gap-1"
-                href="https://buidlguidl.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <BuidlGuidlLogo className="w-3 h-5 pb-1" />
-                <span className="link">BuidlGuidl</span>
-              </a>
-              <p>and</p>
               <a
                 className="flex justify-center items-center gap-1"
                 href="https://monad.xyz/"
@@ -78,9 +66,8 @@ export const Footer = () => {
             </div>
             <span>·</span>
             <div className="text-center">
-              <a href="https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA" target="_blank" rel="noreferrer" className="link">
-                {/* TODO: Add link to github repo to create issue */}
-                Support
+              <a href="https://github.com/cpscott1/social-battle-monad/issues" target="_blank" rel="noreferrer" className="link">
+                Report Issue
               </a>
             </div>
           </div>
