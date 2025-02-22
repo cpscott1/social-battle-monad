@@ -89,12 +89,12 @@ export const Header = () => {
           )}
         </div>
         <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
-          <div className="flex relative w-6 h-6">
-            <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
+          <div className="flex relative w-12 h-12">
+            <Image alt="Social Battle logo" className="cursor-pointer object-contain" fill src="/images/battle-logo.png" priority />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold leading-tight">Scaffold-ETH-Monad</span>
-            <span className="text-xs">Ethereum dev stack</span>
+            <span className="font-bold text-xl leading-tight bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-transparent bg-clip-text">Social Battle</span>
+            <span className="text-xs">Built on Monad</span>
           </div>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
