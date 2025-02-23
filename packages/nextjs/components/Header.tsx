@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
+import { LogoutButton } from "~~/components/auth/LogoutButton";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
@@ -90,10 +91,18 @@ export const Header = () => {
         </div>
         <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
           <div className="flex relative w-12 h-12">
-            <Image alt="Social Battle logo" className="cursor-pointer object-contain" fill src="/images/battle-logo.png" priority />
+            <Image
+              alt="Social Battle logo"
+              className="cursor-pointer object-contain"
+              fill
+              src="/images/battle-logo.png"
+              priority
+            />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-xl leading-tight bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-transparent bg-clip-text">Social Battle</span>
+            <span className="font-bold text-xl leading-tight bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-transparent bg-clip-text">
+              Social Battle
+            </span>
             <span className="text-xs">Built on Monad</span>
           </div>
         </Link>
@@ -101,7 +110,8 @@ export const Header = () => {
           <HeaderMenuLinks />
         </ul>
       </div>
-      <div className="navbar-end flex-grow mr-4">
+      <div className="navbar-end flex-grow mr-4 gap-2">
+        <LogoutButton />
         <RainbowKitCustomConnectButton />
         <FaucetButton />
       </div>
