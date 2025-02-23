@@ -5,11 +5,13 @@ import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowki
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import { useTheme } from "next-themes";
 import { Toaster } from "react-hot-toast";
+import { WagmiConfig } from "wagmi";
 import { Footer } from "~~/components/Footer";
 import { Header } from "~~/components/Header";
 import { PrivyProviderWithWagmi } from "~~/components/auth/PrivyProviderWithWagmi";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { useInitializeNativeCurrencyPrice } from "~~/hooks/scaffold-eth";
+import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   useInitializeNativeCurrencyPrice();
@@ -40,7 +42,7 @@ const ThemeAwareRainbowKit = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <RainbowKitProvider avatar={BlockieAvatar} theme={resolvedTheme === "dark" ? darkTheme() : lightTheme()}>
+    <RainbowKitProvider avatar={BlockieAvatar} theme={resolvedTheme === "dark" ? darkTheme() : lightTheme()} coolMode>
       {children}
     </RainbowKitProvider>
   );
@@ -48,11 +50,13 @@ const ThemeAwareRainbowKit = ({ children }: { children: React.ReactNode }) => {
 
 export const ScaffoldEthAppWithProviders = ({ children }: { children: React.ReactNode }) => {
   return (
-    <PrivyProviderWithWagmi>
-      <ProgressBar height="3px" color="#2299dd" />
-      <ThemeAwareRainbowKit>
-        <ScaffoldEthApp>{children}</ScaffoldEthApp>
-      </ThemeAwareRainbowKit>
-    </PrivyProviderWithWagmi>
+    <WagmiConfig config={wagmiConfig}>
+      <PrivyProviderWithWagmi>
+        <ThemeAwareRainbowKit>
+          <ProgressBar height="3px" color="#2299dd" />
+          <ScaffoldEthApp>{children}</ScaffoldEthApp>
+        </ThemeAwareRainbowKit>
+      </PrivyProviderWithWagmi>
+    </WagmiConfig>
   );
 };
