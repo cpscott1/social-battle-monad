@@ -16,9 +16,6 @@ export const PrivyProviderWithWagmi = ({ children }: { children: React.ReactNode
           accentColor: "#3CFF97",
           showWalletLoginFirst: false,
         },
-        onSuccess: user => {
-          console.log("Successfully logged in user:", user);
-        },
         onError: error => {
           console.error("Error during login:", error);
         },
