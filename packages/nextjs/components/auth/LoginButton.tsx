@@ -2,15 +2,11 @@ import { useLoginWithOAuth, usePrivy } from "@privy-io/react-auth";
 
 export const LoginButton = () => {
   const { ready, authenticated } = usePrivy();
-  const { state, loading, initOAuth } = useLoginWithOAuth();
-
-  console.log("OAuth State:", state); // Debug log
+  const { loading, initOAuth } = useLoginWithOAuth();
 
   const handleSocialLogin = async (provider: "twitter" | "discord") => {
-    console.log(`Attempting to login with ${provider}`); // Debug log
     try {
       await initOAuth({ provider });
-      console.log(`${provider} OAuth initiated`); // Debug log
     } catch (err) {
       console.error(`Error logging in with ${provider}:`, err);
     }
@@ -31,7 +27,6 @@ export const LoginButton = () => {
     return (
       <button
         className="px-6 py-3 bg-[#3CFF97] text-black rounded-lg font-semibold transition-all hover:bg-opacity-90 focus:ring-2 focus:ring-[#3CFF97] focus:ring-opacity-50 focus:outline-none"
-        onClick={() => console.log("Get Started clicked")}
       >
         Get Started
       </button>

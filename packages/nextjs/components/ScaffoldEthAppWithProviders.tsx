@@ -10,6 +10,7 @@ import { Footer } from "~~/components/Footer";
 import { Header } from "~~/components/Header";
 import { PrivyProviderWithWagmi } from "~~/components/auth/PrivyProviderWithWagmi";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
+import { XPProvider } from "~~/context/XPContext";
 import { useInitializeNativeCurrencyPrice } from "~~/hooks/scaffold-eth";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
@@ -53,8 +54,10 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
     <WagmiConfig config={wagmiConfig}>
       <PrivyProviderWithWagmi>
         <ThemeAwareRainbowKit>
-          <ProgressBar height="3px" color="#2299dd" />
-          <ScaffoldEthApp>{children}</ScaffoldEthApp>
+          <XPProvider>
+            <ProgressBar height="3px" color="#2299dd" />
+            <ScaffoldEthApp>{children}</ScaffoldEthApp>
+          </XPProvider>
         </ThemeAwareRainbowKit>
       </PrivyProviderWithWagmi>
     </WagmiConfig>
