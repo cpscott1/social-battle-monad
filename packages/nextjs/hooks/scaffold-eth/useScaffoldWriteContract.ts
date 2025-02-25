@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useTargetNetwork } from "./useTargetNetwork";
 import { MutateOptions } from "@tanstack/react-query";
 import { Abi, ExtractAbiFunctionNames } from "abitype";
-import { Config, UseWriteContractParameters, useAccount, useWriteContract } from "wagmi";
+import { Config, UseWriteContractParameters, useAccount, usePublicClient, useWriteContract } from "wagmi";
 import { WriteContractErrorType, WriteContractReturnType } from "wagmi/actions";
 import { WriteContractVariables } from "wagmi/query";
-import { useDeployedContractInfo, useTransactor } from "~~/hooks/scaffold-eth";
+import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
 import {
   ContractAbi,
@@ -25,9 +25,9 @@ export const useScaffoldWriteContract = <TContractName extends ContractName>(
   writeContractParams?: UseWriteContractParameters,
 ) => {
   const { chain } = useAccount();
-  const writeTx = useTransactor();
   const [isMining, setIsMining] = useState(false);
   const { targetNetwork } = useTargetNetwork();
+  const publicClient = usePublicClient({ chainId: chain?.id });
 
   const wagmiContractWrite = useWriteContract(writeContractParams);
 
@@ -56,25 +56,32 @@ export const useScaffoldWriteContract = <TContractName extends ContractName>(
     try {
       setIsMining(true);
       const { blockConfirmations, onBlockConfirmation, ...mutateOptions } = options || {};
-      const makeWriteWithParams = () =>
-        wagmiContractWrite.writeContractAsync(
-          {
-            abi: deployedContractData.abi as Abi,
-            address: deployedContractData.address,
-            ...variables,
-          } as WriteContractVariables<Abi, string, any[], Config, number>,
-          mutateOptions as
-            | MutateOptions<
-                WriteContractReturnType,
-                WriteContractErrorType,
-                WriteContractVariables<Abi, string, any[], Config, number>,
-                unknown
-              >
-            | undefined,
-        );
-      const writeTxResult = await writeTx(makeWriteWithParams, { blockConfirmations, onBlockConfirmation });
 
-      return writeTxResult;
+      const hash = await wagmiContractWrite.writeContractAsync(
+        {
+          abi: deployedContractData.abi as Abi,
+          address: deployedContractData.address,
+          ...variables,
+        } as WriteContractVariables<Abi, string, any[], Config, number>,
+        mutateOptions as
+          | MutateOptions<
+              WriteContractReturnType,
+              WriteContractErrorType,
+              WriteContractVariables<Abi, string, any[], Config, number>,
+              unknown
+            >
+          | undefined,
+      );
+
+      if (publicClient && blockConfirmations && onBlockConfirmation) {
+        const receipt = await publicClient.waitForTransactionReceipt({
+          hash,
+          confirmations: blockConfirmations,
+        });
+        onBlockConfirmation(receipt.transactionHash);
+      }
+
+      return hash;
     } catch (e: any) {
       throw e;
     } finally {

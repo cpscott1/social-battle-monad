@@ -14,7 +14,6 @@ import {
   transformAbiFunction,
 } from "~~/app/debug/_components/contract";
 import { IntegerInput } from "~~/components/scaffold-eth";
-import { useTransactor } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 
 type WriteOnlyFunctionFormProps = {
@@ -35,7 +34,6 @@ export const WriteOnlyFunctionForm = ({
   const [form, setForm] = useState<Record<string, any>>(() => getInitialFormState(abiFunction));
   const [txValue, setTxValue] = useState<string>("");
   const { chain } = useAccount();
-  const writeTxn = useTransactor();
   const { targetNetwork } = useTargetNetwork();
   const writeDisabled = !chain || chain?.id !== targetNetwork.id;
 
@@ -44,15 +42,14 @@ export const WriteOnlyFunctionForm = ({
   const handleWrite = async () => {
     if (writeContractAsync) {
       try {
-        const makeWriteWithParams = () =>
-          writeContractAsync({
-            address: contractAddress,
-            functionName: abiFunction.name,
-            abi: abi,
-            args: getParsedContractFunctionArgs(form),
-            value: BigInt(txValue),
-          });
-        await writeTxn(makeWriteWithParams);
+        const txParams = {
+          address: contractAddress,
+          functionName: abiFunction.name,
+          abi: abi,
+          args: getParsedContractFunctionArgs(form),
+          value: BigInt(txValue || "0"),
+        };
+        await writeContractAsync(txParams);
         onChange();
       } catch (e: any) {
         console.error("⚡️ ~ file: WriteOnlyFunctionForm.tsx:handleWrite ~ error", e);
