@@ -27,6 +27,11 @@ export async function POST(req: Request) {
       throw new Error("Failed to get IPFS hash");
     }
 
+    // Get Twitter metrics from formData
+    const twitterMetrics = JSON.parse((formData.get("twitterMetrics") as string) || "{}");
+    const xp = parseInt((formData.get("xp") as string) || "0");
+    const level = parseInt((formData.get("level") as string) || "1");
+
     // Create and upload metadata
     const metadata = {
       name: (formData.get("name") as string) || "Social Battle NFT",
@@ -35,11 +40,28 @@ export async function POST(req: Request) {
       attributes: [
         {
           trait_type: "Level",
-          value: "1",
+          value: level.toString(),
         },
         {
           trait_type: "XP",
-          value: "0",
+          value: xp.toString(),
+        },
+        {
+          trait_type: "Twitter Followers",
+          value: twitterMetrics.followers?.toString() || "0",
+        },
+        {
+          trait_type: "Twitter Following",
+          value: twitterMetrics.following?.toString() || "0",
+        },
+        {
+          trait_type: "Tweet Count",
+          value: twitterMetrics.tweets?.toString() || "0",
+        },
+        {
+          trait_type: "Engagement Rate",
+          value: twitterMetrics.engagement_rate?.toString() || "0",
+          display_type: "percentage",
         },
       ],
     };

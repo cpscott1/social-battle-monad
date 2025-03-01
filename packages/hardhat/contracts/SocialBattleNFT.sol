@@ -11,6 +11,9 @@ contract SocialBattleNFT is ERC721URIStorage {
 
     // Mapping to track if an address has already minted
     mapping(address => bool) public hasMinted;
+    
+    // Mapping to track user's token ID
+    mapping(address => uint256) public userTokenId;
 
     constructor() ERC721("SocialBattle", "SBAT") {}
 
@@ -22,8 +25,14 @@ contract SocialBattleNFT is ERC721URIStorage {
         _setTokenURI(newTokenId, tokenURI);
         
         hasMinted[msg.sender] = true;
+        userTokenId[msg.sender] = newTokenId;
         _nextTokenId++;
 
         return newTokenId;
+    }
+
+    function getUserTokenId(address user) public view returns (uint256) {
+        require(hasMinted[user], "User has not minted an NFT");
+        return userTokenId[user];
     }
 } 

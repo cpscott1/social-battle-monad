@@ -2607,6 +2607,7 @@ __metadata:
     react-dom: 18.2.0
     react-hot-toast: ^2.4.0
     tailwindcss: ^3.4.11
+    twitter-api-sdk: ^1.2.1
     type-fest: ^4.26.1
     typescript: <5.6.0
     usehooks-ts: ^3.1.0
@@ -10908,7 +10909,7 @@ eslint-config-next@latest:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.7, node-fetch@npm:^2.7.0":
+"node-fetch@npm:^2.6.1, node-fetch@npm:^2.6.7, node-fetch@npm:^2.7.0":
   version: 2.7.0
   resolution: "node-fetch@npm:2.7.0"
   dependencies:
@@ -14157,6 +14158,16 @@ eslint-config-next@latest:
   version: 1.0.3
   resolution: "tweetnacl@npm:1.0.3"
   checksum: e4a57cac188f0c53f24c7a33279e223618a2bfb5fea426231991652a13247bea06b081fd745d71291fcae0f4428d29beba1b984b1f1ce6f66b06a6d1ab90645c
+  languageName: node
+  linkType: hard
+
+"twitter-api-sdk@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "twitter-api-sdk@npm:1.2.1"
+  dependencies:
+    abort-controller: ^3.0.0
+    node-fetch: ^2.6.1
+  checksum: e93157808725f3affb3de0d963a118ea418bb93345875ba6d360f891c889c3a65f70038d5d3c561bba140c3b202bb255af417ef698868b41d54a4ee9ff81437d
   languageName: node
   linkType: hard
 
