@@ -9,7 +9,7 @@ export const XPDisplay = () => {
 
   // Calculate progress percentage for the current level
   const progressPercentage = xp % 100;
-  
+
   return (
     <div className="flex items-center gap-2 bg-base-300 px-3 py-1 rounded-full">
       <div className="flex flex-col items-center">
@@ -22,11 +22,11 @@ export const XPDisplay = () => {
         <span className="text-sm font-bold">{xp}</span>
       </div>
       <div className="w-full max-w-24 h-1 bg-base-100 rounded-full overflow-hidden">
-        <div 
-          className="h-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500" 
+        <div
+          className="h-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500"
           style={{ width: `${progressPercentage}%` }}
         ></div>
       </div>
     </div>
   );
-}; 
+};

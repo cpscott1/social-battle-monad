@@ -45,14 +45,20 @@ export const Footer = () => {
         <ul className="menu menu-horizontal w-full">
           <div className="flex justify-center items-center gap-2 text-sm w-full">
             <div className="text-center">
-              <a href="https://github.com/cpscott1/social-battle-monad" target="_blank" rel="noreferrer" className="link">
+              <a
+                href="https://github.com/cpscott1/social-battle-monad"
+                target="_blank"
+                rel="noreferrer"
+                className="link"
+              >
                 View Source
               </a>
             </div>
             <span>·</span>
             <div className="flex justify-center items-center gap-2">
               <p className="m-0 text-center">
-                Built by <span className="font-bold">Two Divs</span> with <HeartIcon className="inline-block h-4 w-4" /> on
+                Built by <span className="font-bold">Two Divs</span> with <HeartIcon className="inline-block h-4 w-4" />{" "}
+                on
               </p>
               <a
                 className="flex justify-center items-center gap-1"
@@ -66,7 +72,12 @@ export const Footer = () => {
             </div>
             <span>·</span>
             <div className="text-center">
-              <a href="https://github.com/cpscott1/social-battle-monad/issues" target="_blank" rel="noreferrer" className="link">
+              <a
+                href="https://github.com/cpscott1/social-battle-monad/issues"
+                target="_blank"
+                rel="noreferrer"
+                className="link"
+              >
                 Report Issue
               </a>
             </div>
