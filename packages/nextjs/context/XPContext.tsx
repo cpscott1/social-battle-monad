@@ -1,11 +1,42 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 
+interface NFTStats {
+  strength: number;
+  agility: number;
+  intelligence: number;
+  charisma: number;
+  vitality: number;
+  powerLevel: number;
+  baseStats: {
+    strength: number;
+    agility: number;
+    intelligence: number;
+    charisma: number;
+    vitality: number;
+  };
+  socialBoosts: {
+    strength: number;
+    agility: number;
+    intelligence: number;
+    charisma: number;
+    vitality: number;
+  };
+  connectedAccounts: string[];
+  xp?: number;
+  level?: number;
+  twitterMetrics?: {
+    followers: number;
+    following: number;
+    tweets: number;
+    engagement_rate: number;
+  };
+}
+
 interface XPContextType {
-  xp: number;
+  nftStats: NFTStats | null;
   level: number;
-  addXP: (amount: number) => void;
-  setXP: (amount: number) => void;
+  powerLevel: number;
 }
 
 const XPContext = createContext<XPContextType | undefined>(undefined);
@@ -24,54 +55,45 @@ interface XPProviderProps {
 
 export const XPProvider: React.FC<XPProviderProps> = ({ children }) => {
   const { ready, authenticated, user } = usePrivy();
-  const [xp, setXpState] = useState<number>(0);
+  const [nftStats, setNFTStats] = useState<NFTStats | null>(null);
   const [level, setLevel] = useState<number>(1);
+  const [powerLevel, setPowerLevel] = useState<number>(0);
 
-  // Calculate level based on XP
-  const calculateLevel = (xpPoints: number): number => {
-    return Math.floor(xpPoints / 100) + 1;
-  };
-
-  // Set XP and recalculate level
-  const setXP = (amount: number) => {
-    setXpState(amount);
-    setLevel(calculateLevel(amount));
-  };
-
-  // Add XP and recalculate level
-  const addXP = (amount: number) => {
-    const newXP = xp + amount;
-    setXpState(newXP);
-    setLevel(calculateLevel(newXP));
-  };
-
-  // Initialize XP from storage or API when user is authenticated
+  // Fetch NFT stats when user is authenticated
   useEffect(() => {
-    if (authenticated && user) {
-      // In a real implementation, you would fetch the user's XP from your backend or smart contract
-      // For now, we'll use localStorage to persist XP between sessions
-      const storedXP = localStorage.getItem(`xp_${user.id}`);
-      if (storedXP) {
-        const parsedXP = parseInt(storedXP, 10);
-        setXP(parsedXP);
+    const fetchNFTStats = async () => {
+      if (authenticated && user) {
+        try {
+          // Get list of connected accounts
+          const connectedPlatforms = user.linkedAccounts.map(account => account.type);
+
+          console.log("Connected social accounts:", connectedPlatforms);
+
+          // Fetch stats with connected accounts
+          const response = await fetch(`/api/twitter/metrics?connectedAccounts=${connectedPlatforms.join(",")}`);
+          const data = await response.json();
+
+          if (data.success) {
+            console.log("Received NFT stats:", data.stats);
+            setNFTStats(data.stats);
+            setPowerLevel(data.stats.powerLevel);
+            setLevel(Math.floor(data.stats.powerLevel / 10) + 1); // Level is powerLevel/10 rounded down + 1
+          } else {
+            console.log("Failed to fetch NFT stats:", data.error);
+          }
+        } catch (error) {
+          console.error("Error fetching NFT stats:", error);
+        }
       } else {
-        // Mock initial XP for new users
-        const initialXP = Math.floor(Math.random() * 500);
-        setXP(initialXP);
+        console.log("User not authenticated or not ready:", { authenticated, ready });
       }
-    }
-  }, [authenticated, user]);
+    };
 
-  // Save XP to storage when it changes
-  useEffect(() => {
-    if (authenticated && user && xp > 0) {
-      localStorage.setItem(`xp_${user.id}`, xp.toString());
+    if (ready) {
+      console.log("XP Context ready, fetching NFT stats...");
+      fetchNFTStats();
     }
-  }, [xp, authenticated, user]);
+  }, [authenticated, user, ready]);
 
-  return (
-    <XPContext.Provider value={{ xp, level, addXP, setXP }}>
-      {children}
-    </XPContext.Provider>
-  );
-}; 
+  return <XPContext.Provider value={{ nftStats, level, powerLevel }}>{children}</XPContext.Provider>;
+};
