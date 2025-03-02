@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
+import { NFTCard } from "./NFTCard";
 import { useAccount } from "wagmi";
 import { useScaffoldContract, useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
@@ -142,7 +142,7 @@ export const NFTDisplay = () => {
     fetchNFTData();
   }, [fetchNFTData]);
 
-  const { writeContractAsync: mintNFT, isMining: isMinting } = useScaffoldWriteContract("SocialBattleNFT", {});
+  const { writeContractAsync: mintNFT } = useScaffoldWriteContract("SocialBattleNFT", {});
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -242,28 +242,7 @@ export const NFTDisplay = () => {
               <p className="mt-4">Loading your NFT...</p>
             </div>
           ) : nftData ? (
-            <div className="flex flex-col items-center gap-6">
-              <div className="relative w-full max-w-md aspect-square rounded-xl overflow-hidden shadow-xl">
-                <Image src={nftData.image} alt={nftData.name} fill className="object-cover" />
-              </div>
-
-              <div className="w-full max-w-md">
-                <h3 className="text-xl font-bold mb-2">{nftData.name}</h3>
-                <p className="text-base-content/70 mb-4">{nftData.description}</p>
-
-                <button
-                  className="btn btn-primary w-full mt-6"
-                  onClick={() =>
-                    window.open(
-                      `https://testnets.opensea.io/assets/monad-testnet/${process.env.NEXT_PUBLIC_SOCIAL_BATTLE_NFT_ADDRESS}`,
-                      "_blank",
-                    )
-                  }
-                >
-                  View on OpenSea
-                </button>
-              </div>
-            </div>
+            <NFTCard name={nftData.name} image={nftData.image} attributes={nftData.attributes} />
           ) : (
             <div className="text-center py-4">
               <p className="text-error">Failed to load NFT data</p>
@@ -310,16 +289,26 @@ export const NFTDisplay = () => {
             </div>
             {error && <div className="text-error text-sm mt-2">{error}</div>}
             {previewUrl && (
-              <div className="mt-4 relative w-64 h-64 mx-auto">
-                <Image src={previewUrl} alt="Preview" fill className="rounded-lg object-contain" />
+              <div className="mt-4">
+                <NFTCard
+                  name={name || "Your NFT"}
+                  image={previewUrl}
+                  attributes={[
+                    { trait_type: "Level", value: "1" },
+                    { trait_type: "XP", value: "0" },
+                    { trait_type: "Strength", value: "?" },
+                    { trait_type: "Vitality", value: "?" },
+                    { trait_type: "Agility", value: "?" },
+                  ]}
+                />
               </div>
             )}
             <button
-              className="btn btn-primary mt-4"
+              className={`btn btn-primary w-full ${isUploading ? "loading" : ""}`}
               onClick={handleUpload}
-              disabled={isUploading || isMinting || !file || !name || !description}
+              disabled={!file || !name || isUploading}
             >
-              {isUploading ? "Uploading to IPFS..." : isMinting ? "Minting NFT..." : "Upload & Mint NFT"}
+              {isUploading ? "Minting..." : "Mint NFT"}
             </button>
           </div>
         </div>

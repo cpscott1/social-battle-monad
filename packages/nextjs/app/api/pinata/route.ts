@@ -2,6 +2,20 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
+// Helper function to generate random number between min and max
+const randomBetween = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+// Generate base stats for NFT (range 5-20)
+const generateBaseStats = () => {
+  return {
+    strength: randomBetween(5, 20),
+    agility: randomBetween(5, 20),
+    vitality: randomBetween(5, 20),
+  };
+};
+
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
@@ -21,16 +35,14 @@ export async function POST(req: Request) {
     }
 
     const uploadResponse = await uploadRequest.json();
-    console.log("Pinata upload response:", uploadResponse);
+    console.log("Image uploaded to IPFS successfully");
 
     if (!uploadResponse.IpfsHash) {
       throw new Error("Failed to get IPFS hash");
     }
 
-    // Get Twitter metrics from formData
-    const twitterMetrics = JSON.parse((formData.get("twitterMetrics") as string) || "{}");
-    const xp = parseInt((formData.get("xp") as string) || "0");
-    const level = parseInt((formData.get("level") as string) || "1");
+    // Generate unique base stats for this NFT
+    const baseStats = generateBaseStats();
 
     // Create and upload metadata
     const metadata = {
@@ -40,28 +52,23 @@ export async function POST(req: Request) {
       attributes: [
         {
           trait_type: "Level",
-          value: level.toString(),
+          value: "1",
         },
         {
           trait_type: "XP",
-          value: xp.toString(),
+          value: "0",
         },
         {
-          trait_type: "Twitter Followers",
-          value: twitterMetrics.followers?.toString() || "0",
+          trait_type: "Strength",
+          value: baseStats.strength.toString(),
         },
         {
-          trait_type: "Twitter Following",
-          value: twitterMetrics.following?.toString() || "0",
+          trait_type: "Agility",
+          value: baseStats.agility.toString(),
         },
         {
-          trait_type: "Tweet Count",
-          value: twitterMetrics.tweets?.toString() || "0",
-        },
-        {
-          trait_type: "Engagement Rate",
-          value: twitterMetrics.engagement_rate?.toString() || "0",
-          display_type: "percentage",
+          trait_type: "Vitality",
+          value: baseStats.vitality.toString(),
         },
       ],
     };
@@ -82,7 +89,7 @@ export async function POST(req: Request) {
     }
 
     const metadataResponse = await metadataRequest.json();
-    console.log("Metadata upload response:", metadataResponse);
+    console.log("Metadata uploaded to IPFS successfully");
 
     return NextResponse.json({
       success: true,
@@ -90,7 +97,7 @@ export async function POST(req: Request) {
       imageUrl: `https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${uploadResponse.IpfsHash}`,
     });
   } catch (error) {
-    console.error("Error handling request:", error);
+    console.error("Error uploading to IPFS:", error instanceof Error ? error.message : "Unknown error");
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Error uploading to Pinata" },
       { status: 500 },

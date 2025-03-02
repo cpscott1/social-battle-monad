@@ -80,14 +80,13 @@ export async function GET(req: Request) {
         powerLevel,
         baseStats,
         socialBoosts,
-        connectedAccounts,
       },
     };
 
-    console.log("Generated NFT stats:", JSON.stringify(response, null, 2));
+    console.log("NFT stats generated successfully");
     return NextResponse.json(response);
   } catch (error) {
-    console.error("Error generating NFT stats:", error);
+    console.error("Error generating NFT stats");
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Error generating NFT stats" },
       { status: 500 },

@@ -22,7 +22,6 @@ interface NFTStats {
     charisma: number;
     vitality: number;
   };
-  connectedAccounts: string[];
   xp?: number;
   level?: number;
   twitterMetrics?: {
@@ -67,30 +66,27 @@ export const XPProvider: React.FC<XPProviderProps> = ({ children }) => {
           // Get list of connected accounts
           const connectedPlatforms = user.linkedAccounts.map(account => account.type);
 
-          console.log("Connected social accounts:", connectedPlatforms);
-
           // Fetch stats with connected accounts
           const response = await fetch(`/api/twitter/metrics?connectedAccounts=${connectedPlatforms.join(",")}`);
           const data = await response.json();
 
           if (data.success) {
-            console.log("Received NFT stats:", data.stats);
             setNFTStats(data.stats);
             setPowerLevel(data.stats.powerLevel);
             setLevel(Math.floor(data.stats.powerLevel / 10) + 1); // Level is powerLevel/10 rounded down + 1
           } else {
-            console.log("Failed to fetch NFT stats:", data.error);
+            console.error("Failed to fetch NFT stats");
           }
         } catch (error) {
-          console.error("Error fetching NFT stats:", error);
+          console.error("Error fetching NFT stats");
         }
       } else {
-        console.log("User not authenticated or not ready:", { authenticated, ready });
+        console.log("User authentication required");
       }
     };
 
     if (ready) {
-      console.log("XP Context ready, fetching NFT stats...");
+      console.log("Fetching NFT stats...");
       fetchNFTStats();
     }
   }, [authenticated, user, ready]);
