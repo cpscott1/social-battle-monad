@@ -5,16 +5,23 @@ import { privyConfig } from "~~/utils/privy/privyConfig";
 const queryClient = new QueryClient();
 
 export const PrivyProviderWithWagmi = ({ children }: { children: React.ReactNode }) => {
+  if (!process.env.NEXT_PUBLIC_PRIVY_APP_ID) {
+    throw new Error("NEXT_PUBLIC_PRIVY_APP_ID environment variable is not set");
+  }
+
   return (
     <PrivyProvider
-      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
+      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID}
       config={{
         ...privyConfig,
-        loginMethods: ["twitter", "discord"],
+        loginMethods: ["email", "wallet", "google", "twitter", "discord"],
         appearance: {
           theme: "dark" as const,
           accentColor: "#3CFF97",
           showWalletLoginFirst: false,
+        },
+        embeddedWallets: {
+          createOnLogin: "users-without-wallets",
         },
         onError: error => {
           console.error("Error during login:", error);

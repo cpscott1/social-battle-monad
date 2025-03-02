@@ -2120,18 +2120,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@privy-io/api-base@npm:1.4.3, @privy-io/api-base@npm:^1.4.3":
-  version: 1.4.3
-  resolution: "@privy-io/api-base@npm:1.4.3"
+"@privy-io/api-base@npm:1.4.4, @privy-io/api-base@npm:^1.4.4":
+  version: 1.4.4
+  resolution: "@privy-io/api-base@npm:1.4.4"
   dependencies:
     zod: ^3.21.4
-  checksum: fa18129404af6d8208c9f9cd54489cdea47e3908f032c97f0fe983bef8caa05cfff3f5cb5defcc1128cb73a377aa087d0f9b4cc5f8cc2fc244b57e8300c7b15e
+  checksum: 0e1f80e331cb378e7018e696911e0b3ff9f273bfbf6eb420093780b610171ed7062f10039dee2feca89a57e8325a8ff9f9dfd2470000fa8d0bc68b21c4e7ff27
   languageName: node
   linkType: hard
 
-"@privy-io/js-sdk-core@npm:0.44.2":
-  version: 0.44.2
-  resolution: "@privy-io/js-sdk-core@npm:0.44.2"
+"@privy-io/js-sdk-core@npm:0.44.4":
+  version: 0.44.4
+  resolution: "@privy-io/js-sdk-core@npm:0.44.4"
   dependencies:
     "@ethersproject/abstract-signer": ^5.7.0
     "@ethersproject/bignumber": ^5.7.0
@@ -2139,8 +2139,8 @@ __metadata:
     "@ethersproject/providers": ^5.7.2
     "@ethersproject/transactions": ^5.7.0
     "@ethersproject/units": ^5.7.0
-    "@privy-io/api-base": ^1.4.3
-    "@privy-io/public-api": 2.18.9
+    "@privy-io/api-base": ^1.4.4
+    "@privy-io/public-api": 2.19.0
     eventemitter3: ^5.0.1
     fetch-retry: ^5.0.6
     jose: ^4.15.5
@@ -2156,26 +2156,26 @@ __metadata:
       optional: true
     viem:
       optional: true
-  checksum: 87f0c3c24459037cc3f894a915c28983999cd94f6b6259b20228f4d543ccd960e363def1d4c514630f1c39a72453b7ee5c0a4ddc012a1b09adbf1fbf3df344dd
+  checksum: ec8e6c3740e65a26a24a1fa00c5a0e121b9ed9dbf3202d52ef1e27e9b0e9d4966e2b72f010a7b6b69df6914e4bb73b2cafe3ccf7572e55ceefbe85edb9b2cf5a
   languageName: node
   linkType: hard
 
-"@privy-io/public-api@npm:2.18.9":
-  version: 2.18.9
-  resolution: "@privy-io/public-api@npm:2.18.9"
+"@privy-io/public-api@npm:2.19.0":
+  version: 2.19.0
+  resolution: "@privy-io/public-api@npm:2.19.0"
   dependencies:
-    "@privy-io/api-base": 1.4.3
+    "@privy-io/api-base": 1.4.4
     bs58: ^5.0.0
     libphonenumber-js: ^1.10.31
     viem: ^2
     zod: ^3.22.4
-  checksum: ab660fa45be62d05f24e2c2c5b993c43b0500dd27962da175788af303b254036630396890e7d3643fb8e2b25248edd733c6bdf9ac2eed6647624cf7027823558
+  checksum: 7cf7011e5af0613bfca5955312eb8fce49d7085c8d8c68dbff168e1174a431ad955732667cf06c048fd0e4924e8ea1eefebd4995453f2275131c92bad61c925e
   languageName: node
   linkType: hard
 
-"@privy-io/react-auth@npm:^2.4.5":
-  version: 2.4.5
-  resolution: "@privy-io/react-auth@npm:2.4.5"
+"@privy-io/react-auth@npm:^2.6.0":
+  version: 2.6.0
+  resolution: "@privy-io/react-auth@npm:2.6.0"
   dependencies:
     "@coinbase/wallet-sdk": 4.3.0
     "@floating-ui/react": ^0.26.22
@@ -2183,7 +2183,7 @@ __metadata:
     "@heroicons/react": ^2.1.1
     "@marsidev/react-turnstile": ^0.4.1
     "@metamask/eth-sig-util": ^6.0.0
-    "@privy-io/js-sdk-core": 0.44.2
+    "@privy-io/js-sdk-core": 0.44.4
     "@simplewebauthn/browser": ^9.0.1
     "@solana/wallet-adapter-base": ^0.9.23
     "@solana/wallet-standard-wallet-adapter-base": ^1.1.2
@@ -2210,7 +2210,7 @@ __metadata:
     stylis: ^4.3.4
     tinycolor2: ^1.6.0
     uuid: ">=8 <10"
-    viem: ^2.21.9
+    viem: ^2.23.5
     zustand: ^5.0.0
   peerDependencies:
     "@abstract-foundation/agw-client": ^1.0.0
@@ -2225,7 +2225,7 @@ __metadata:
       optional: true
     permissionless:
       optional: true
-  checksum: 99f55dd07b07bd68b9bad255fff3923c2fa34998a119e7d69a788509c9a243d344172004e7d53835bd802cd4c760feda5edfc29a93ae4052a398478e0bb1de07
+  checksum: f936d9e883bf2541300407d85313e056af19397a8ff6386d0d62558f01c0339b8b58839e82fffdd15f350548a6c8e3c9dd3373cfd301cb0c56badc40cd7d3172
   languageName: node
   linkType: hard
 
@@ -2576,10 +2576,10 @@ __metadata:
   resolution: "@se-2/nextjs@workspace:packages/nextjs"
   dependencies:
     "@heroicons/react": ^2.1.5
-    "@privy-io/react-auth": ^2.4.5
+    "@privy-io/react-auth": ^2.6.0
     "@privy-io/wagmi": ^1.0.3
     "@rainbow-me/rainbowkit": 2.1.6
-    "@tanstack/react-query": ^5.59.15
+    "@tanstack/react-query": ^5.66.11
     "@trivago/prettier-plugin-sort-imports": ^4.3.0
     "@types/node": ^18.19.50
     "@types/react": 18.2.0
@@ -3000,21 +3000,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.66.4":
-  version: 5.66.4
-  resolution: "@tanstack/query-core@npm:5.66.4"
-  checksum: 947d89e844e46d8a13f2ba412227f534ab2d3c7a2f8c09ea3f00b5962ad0eadef94eeec67f61269990a0db23ce13d89df8f62de8bf98976ebda51e014ecbf811
+"@tanstack/query-core@npm:5.66.11":
+  version: 5.66.11
+  resolution: "@tanstack/query-core@npm:5.66.11"
+  checksum: 59485647ab6c6c52e610a673406fdd368d4ac55ce76dbacd96ed051c3a826f114a3ac554ef12efdfbbf1683ed12493ef1d04c2be31d6cb6c5709f359986f2bb9
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.59.15":
-  version: 5.66.9
-  resolution: "@tanstack/react-query@npm:5.66.9"
+"@tanstack/react-query@npm:^5.66.11":
+  version: 5.66.11
+  resolution: "@tanstack/react-query@npm:5.66.11"
   dependencies:
-    "@tanstack/query-core": 5.66.4
+    "@tanstack/query-core": 5.66.11
   peerDependencies:
     react: ^18 || ^19
-  checksum: f81de05a362fc8e1d4d44353ff1c8abba0ca268f1c856b63eeaf50bcdba23c7a003045fdafe7540975d432c50f53af9041174d6eeb9fd8e2d8564591603533f4
+  checksum: 73622890bf730e2d53c700eb355134c8b7e8693e96d246641000ef6039fafb70b53c3a68f51371b3710c08c90d335268eff8f13d573e4cd531fddb98288f10e3
   languageName: node
   linkType: hard
 
@@ -14864,7 +14864,7 @@ eslint-config-next@latest:
   languageName: node
   linkType: hard
 
-"viem@npm:^2, viem@npm:^2.1.1, viem@npm:^2.21.9":
+"viem@npm:^2, viem@npm:^2.1.1":
   version: 2.23.4
   resolution: "viem@npm:2.23.4"
   dependencies:
@@ -14882,6 +14882,27 @@ eslint-config-next@latest:
     typescript:
       optional: true
   checksum: 716307ac24ac0a07f9e4509c71dc1decf5aee23e22e76d34fbb2c724d3d7750ea545da488cb134ff8fa6b6b2f78996976ec401dd071a6dc47b6ab8d3cfde9a58
+  languageName: node
+  linkType: hard
+
+"viem@npm:^2.23.5":
+  version: 2.23.5
+  resolution: "viem@npm:2.23.5"
+  dependencies:
+    "@noble/curves": 1.8.1
+    "@noble/hashes": 1.7.1
+    "@scure/bip32": 1.6.2
+    "@scure/bip39": 1.5.4
+    abitype: 1.0.8
+    isows: 1.0.6
+    ox: 0.6.7
+    ws: 8.18.0
+  peerDependencies:
+    typescript: ">=5.0.4"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: eb8763ea8efec1ba983a44ad243ad7de5bfdec1b2da8ed7d293bbcbf7ac03c20103b4e0a4bbc99d2fe7d50358dc8bc7efd859b7604e13e406f22eb902e28806d
   languageName: node
   linkType: hard
 
