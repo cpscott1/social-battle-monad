@@ -68,7 +68,7 @@ export const useTransactor = (walletClient: WalletClient | null, chain?: Chain):
           to: tx.to,
           value: tx.value,
           data: tx.data,
-          account: tx.account as Account,
+          account: { address: tx.account } as Account,
           chain,
         });
 
