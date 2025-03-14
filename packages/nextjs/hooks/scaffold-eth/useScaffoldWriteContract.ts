@@ -78,7 +78,7 @@ export const useScaffoldWriteContract = <TContractName extends ContractName>(
           hash,
           confirmations: blockConfirmations,
         });
-        onBlockConfirmation(receipt.transactionHash);
+        onBlockConfirmation(receipt);
       }
 
       return hash;
