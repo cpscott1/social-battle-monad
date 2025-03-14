@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { PrivyProvider } from "@privy-io/react-auth";
 import { WagmiConfig } from "wagmi";
-import { config } from "~~/wagmi/config";
+import { monadTestnet } from "~~/utils/customChains";
+import { wagmiConfig } from "~~/wagmi/config";
 
 export const PrivyProviderWithWagmi = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
@@ -21,14 +22,13 @@ export const PrivyProviderWithWagmi = ({ children }: { children: React.ReactNode
           accentColor: "#676FFF",
           showWalletLoginFirst: true,
         },
-        defaultChainId: 10143,
+        defaultChain: monadTestnet,
         embeddedWallets: {
           createOnLogin: "users-without-wallets",
         },
-        redirectUrl: typeof window !== "undefined" ? window.location.origin : undefined,
       }}
     >
-      <WagmiConfig config={config}>{children}</WagmiConfig>
+      <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
     </PrivyProvider>
   );
 };
