@@ -11,10 +11,24 @@ export const metadata: Metadata = {
   title: "Block Explorer",
 };
 
-interface PageProps {
-  params: {
-    address: string;
-  };
+// ✅ Explicitly define Next.js PageProps correctly
+export interface PageProps {
+  params: { address: string };
+}
+
+// ✅ Ensure `params` is directly used as an object
+export default async function Page({ params }: { params: { address: string } }) {
+  const { address } = params;
+
+  if (!address || isZeroAddress(address)) return null;
+
+  try {
+    const contractData = await getContractData(address);
+    return <AddressComponent address={address} contractData={contractData} />;
+  } catch (error) {
+    console.error("Error fetching contract data:", error);
+    return <AddressComponent address={address} contractData={null} />;
+  }
 }
 
 async function fetchByteCodeAndAssembly(buildInfoDirectory: string, contractPath: string) {
@@ -45,15 +59,11 @@ const getContractData = async (address: string) => {
   const chainId = hardhat.id;
   let contractPath = "";
 
-  const buildInfoDirectory = path.join(
-    process.cwd(), // Ensures correct path resolution in Next.js
-    "hardhat",
-    "artifacts",
-    "build-info",
-  );
+  const buildInfoDirectory = path.join(process.cwd(), "hardhat", "artifacts", "build-info");
 
   if (!fs.existsSync(buildInfoDirectory)) {
-    throw new Error(`Directory ${buildInfoDirectory} not found.`);
+    console.error(`Directory ${buildInfoDirectory} not found.`);
+    return null;
   }
 
   const deployedContractsOnChain = contracts ? contracts[chainId] : {};
@@ -65,27 +75,13 @@ const getContractData = async (address: string) => {
   }
 
   if (!contractPath) {
-    return null; // No contract found at this address
+    return null;
   }
 
-  const { bytecode, assembly } = await fetchByteCodeAndAssembly(buildInfoDirectory, contractPath);
-  return { bytecode, assembly };
+  return await fetchByteCodeAndAssembly(buildInfoDirectory, contractPath);
 };
 
+// ✅ Ensure `generateStaticParams` returns the correct type
 export async function generateStaticParams(): Promise<{ address: string }[]> {
   return [{ address: "0x0000000000000000000000000000000000000000" }];
-}
-
-export default async function Page({ params }: PageProps) {
-  const { address } = params;
-
-  if (isZeroAddress(address)) return null;
-
-  try {
-    const contractData = await getContractData(address);
-    return <AddressComponent address={address} contractData={contractData} />;
-  } catch (error) {
-    console.error("Error fetching contract data:", error);
-    return <AddressComponent address={address} contractData={null} />;
-  }
 }
