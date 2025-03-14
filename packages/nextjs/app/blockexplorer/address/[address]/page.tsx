@@ -11,14 +11,9 @@ export const metadata: Metadata = {
   title: "Block Explorer",
 };
 
-// ✅ Explicitly define Next.js PageProps correctly
-export interface PageProps {
-  params: { address: string };
-}
-
-// ✅ Ensure `params` is directly used as an object
-export default async function Page({ params }: { params: { address: string } }) {
-  const { address } = params;
+// ✅ Adjusted params to be a Promise-based object for Next.js 15+
+export default async function Page({ params }: { params: Promise<{ address: string }> }) {
+  const { address } = await params; // ✅ Awaiting params since it's now a Promise
 
   if (!address || isZeroAddress(address)) return null;
 
@@ -81,7 +76,7 @@ const getContractData = async (address: string) => {
   return await fetchByteCodeAndAssembly(buildInfoDirectory, contractPath);
 };
 
-// ✅ Ensure `generateStaticParams` returns the correct type
+// ✅ Ensure `generateStaticParams` correctly returns an array of params
 export async function generateStaticParams(): Promise<{ address: string }[]> {
   return [{ address: "0x0000000000000000000000000000000000000000" }];
 }
