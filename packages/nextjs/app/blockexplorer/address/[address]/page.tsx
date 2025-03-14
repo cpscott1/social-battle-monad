@@ -6,11 +6,6 @@ import deployedContracts from "~~/contracts/deployedContracts";
 import { isZeroAddress } from "~~/utils/scaffold-eth/common";
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
-type PageProps = {
-  params: { address: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
-
 async function fetchByteCodeAndAssembly(buildInfoDirectory: string, contractPath: string) {
   const buildInfoFiles = fs.readdirSync(buildInfoDirectory);
   let bytecode = "";
@@ -78,12 +73,17 @@ const getContractData = async (address: string) => {
   return { bytecode, assembly };
 };
 
-export function generateStaticParams() {
-  // An workaround to enable static exports in Next.js, generating single dummy page.
+export async function generateStaticParams() {
   return [{ address: "0x0000000000000000000000000000000000000000" }];
 }
 
-export default async function AddressPage({ params }: PageProps) {
+type Props = {
+  params: {
+    address: string;
+  };
+};
+
+export default async function Page({ params }: Props) {
   const { address } = params;
 
   if (isZeroAddress(address)) return null;
