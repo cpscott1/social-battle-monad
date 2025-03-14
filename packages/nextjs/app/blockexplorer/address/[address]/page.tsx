@@ -1,4 +1,5 @@
 import fs from "fs";
+import { Metadata } from "next";
 import path from "path";
 import { hardhat } from "viem/chains";
 import { AddressComponent } from "~~/app/blockexplorer/_components/AddressComponent";
@@ -6,14 +7,23 @@ import deployedContracts from "~~/contracts/deployedContracts";
 import { isZeroAddress } from "~~/utils/scaffold-eth/common";
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
+export const metadata: Metadata = {
+  title: "Block Explorer",
+};
+
+interface PageProps {
+  params: {
+    address: string;
+  };
+}
+
 async function fetchByteCodeAndAssembly(buildInfoDirectory: string, contractPath: string) {
   const buildInfoFiles = fs.readdirSync(buildInfoDirectory);
   let bytecode = "";
   let assembly = "";
 
-  for (let i = 0; i < buildInfoFiles.length; i++) {
-    const filePath = path.join(buildInfoDirectory, buildInfoFiles[i]);
-
+  for (const file of buildInfoFiles) {
+    const filePath = path.join(buildInfoDirectory, file);
     const buildInfo = JSON.parse(fs.readFileSync(filePath, "utf8"));
 
     if (buildInfo.output.contracts[contractPath]) {
@@ -24,9 +34,7 @@ async function fetchByteCodeAndAssembly(buildInfoDirectory: string, contractPath
       }
     }
 
-    if (bytecode && assembly) {
-      break;
-    }
+    if (bytecode && assembly) break;
   }
 
   return { bytecode, assembly };
@@ -38,14 +46,7 @@ const getContractData = async (address: string) => {
   let contractPath = "";
 
   const buildInfoDirectory = path.join(
-    __dirname,
-    "..",
-    "..",
-    "..",
-    "..",
-    "..",
-    "..",
-    "..",
+    process.cwd(), // Ensures correct path resolution in Next.js
     "hardhat",
     "artifacts",
     "build-info",
@@ -64,26 +65,18 @@ const getContractData = async (address: string) => {
   }
 
   if (!contractPath) {
-    // No contract found at this address
-    return null;
+    return null; // No contract found at this address
   }
 
   const { bytecode, assembly } = await fetchByteCodeAndAssembly(buildInfoDirectory, contractPath);
-
   return { bytecode, assembly };
 };
 
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ address: string }[]> {
   return [{ address: "0x0000000000000000000000000000000000000000" }];
 }
 
-type Props = {
-  params: {
-    address: string;
-  };
-};
-
-export default async function Page({ params }: Props) {
+export default async function Page({ params }: PageProps) {
   const { address } = params;
 
   if (isZeroAddress(address)) return null;
